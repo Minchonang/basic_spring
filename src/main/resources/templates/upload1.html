@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<title>파일 업로드</title>
+		<style>
+			body {
+				margin: 30px;
+			}
+
+			.uploadFile {
+				width: 300px;
+				background-color: rgba(211, 211, 211, 0.476);
+				border-radius: 5px;
+				border: 1.5px white solid;
+			}
+			.uploadFile:hover {
+				cursor: pointer;
+				border: 1.5px rgba(57, 57, 247, 0.57) solid;
+			}
+
+			button {
+				background-color: white;
+				border: 0;
+				font-weight: bold;
+			}
+			button:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<form action="/upload2" method="post" enctype="multipart/form-data">
+			<input type="file" name="file" multiple class="uploadFile" />
+
+			<button>업로드</button>
+		</form>
+	</body>
+</html>

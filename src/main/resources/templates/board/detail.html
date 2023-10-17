@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>게시물: [[${board.title}]]</title>
+		<style>
+			body {
+				margin: 50px 50px;
+			}
+
+			a {
+				text-decoration: none;
+				color: black;
+			}
+
+			button {
+				cursor: pointer;
+			}
+
+			.goBackBtn {
+				border: 0;
+				background-color: white;
+				cursor: pointer;
+				font-size: 1.005rem;
+			}
+			.goBackBtn:hover {
+				text-decoration: underline;
+			}
+
+			.goListBtn {
+				background-color: #ffffff;
+				border: black 0.5px solid;
+				border-radius: 5px;
+				padding: 5px 10px;
+				transition-duration: 0.2s;
+			}
+			.goListBtn:hover {
+				background-color: lightgray;
+			}
+
+			.fileInfo {
+				/* font-weight: ; */
+				text-decoration: underline;
+				font-size: 15px;
+			}
+			.fileInfo:hover {
+				cursor: pointer;
+				background-color: rgba(128, 128, 128, 0.218);
+			}
+
+			.updateBtn {
+				background-color: white;
+				padding: 8px 10px;
+				border: black 0.5px solid;
+				border-radius: 5px;
+				transition-duration: 0.2s;
+			}
+			.updateBtn:hover {
+				background-color: aquamarine;
+			}
+
+			.deleteBtn {
+				color: rgb(247, 89, 89);
+				background-color: white;
+				border: black 0.5px solid;
+				padding: 8px 10px;
+				border-radius: 5px;
+				transition-duration: 0.2s;
+			}
+			.deleteBtn:hover {
+				color: white;
+				background-color: rgb(247, 89, 89);
+			}
+
+			.commentBox {
+				padding: 5px 10px;
+				border: 2px aquamarine solid;
+				border-radius: 5px;
+				width: 500px;
+				height: 20px;
+				outline: none;
+			}
+			.commentBtn {
+				padding: 8px 20px;
+				background-color: aquamarine;
+				border: 2px aquamarine;
+				border-radius: 5px;
+			}
+			.commentList {
+				list-style: none;
+			}
+			.commentWriter {
+				font-weight: bold;
+				cursor: pointer;
+			}
+			.commentWriter:hover {
+				text-decoration: underline;
+			}
+			.commentDate {
+				color: lightgray;
+			}
+			.commentDeleteBtn {
+				background-color: white;
+				border: 0;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+			.commentDeleteBtn:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<button onclick="goList()" class="goBackBtn">뒤로가기</button>
+		</div>
+		<hr />
+		<div>
+			<p>번호: [[ ${board.id} ]]</p>
+			<h1>제목: [[ ${board.title} ]]</h1>
+			<h3>작성자: [[ ${board.writer} ]]</h3>
+			<h3>내용:</h3>
+			<p>[[ ${board.content} ]]</p>
+			<br />
+
+			<!-- 첨부파일 -->
+			<div>--- [첨부파일] ----</div>
+			<br />
+			<div th:each="fileAtch : ${board.fileAtchs}">
+				<span class="fileInfo"
+					><a th:href="@{/download(id=${fileAtch.id})}"
+						>[[ ${fileAtch.originalName} ]]</a
+					></span
+				>
+				<br />
+			</div>
+			<br />
+			<!-- <button
+				th:text="수정하기"
+				th:onclick="'location=\'/board/update?id=' + ${board.id} +'\''"
+			></button>
+
+			<a th:href="@{/board/update(id=${board.id})}">수정하기</a> -->
+
+			<button onclick="update()" class="updateBtn">수정하기</button>
+
+			<!-- 작성자가 일치하지 않음 -->
+			<th:block th:if="${session.name} == null">
+				<button onclick="reject()">삭제하기</button>
+			</th:block>
+
+			<!-- 작성자가 일치함 -->
+			<th:block th:unless="${session.name} == null">
+				<button onclick="remove()" class="deleteBtn">삭제하기</button>
+			</th:block>
+		</div>
+		<hr />
+
+		<!--		댓글 입력-->
+		<form action="/board/comment" method="post">
+			<input
+				type="text"
+				name="content"
+				class="commentBox"
+				placeholder="댓글을 입력하세요."
+				onfocus="this.placeholder = ''"
+				onblur="this.placeholder='댓글을 입력하세요.'"
+			/>
+			<input type="hidden" name="boardId" th:value="${board.id}" />
+			<button class="commentBtn">작성</button>
+		</form>
+
+		<!--		댓글 목록-->
+		<div th:each="comment: ${board.comments}">
+			<br />
+			<span class="commentWriter"> [[ ${comment.writer} ]] </span>
+			<span>&nbsp; [[ ${comment.content} ]] &nbsp </span>
+			<span class="commentDate">작성일: [[ ${comment.creDate} ]]</span>
+			<button
+				th:onclick="'removeComment(' + ${comment.id} + ')'"
+				class="commentDeleteBtn"
+			>
+				삭제
+			</button>
+		</div>
+
+		<br />
+		<div>
+			<button onclick="goList()" class="goListBtn">목록</button>
+		</div>
+	</body>
+
+	<!-- script -->
+	<script>
+		function update(event) {
+			location = "/board/update?id=[[ ${board.id} ]]";
+		}
+		function remove() {
+			const isOk = confirm("삭제하시겠습니까?");
+			if (isOk) {
+				location = "/board/remove?id=[[ ${board.id} ]]";
+			}
+		}
+		function reject() {
+			alert("작성자가 아니면 삭제할 수 없습니다.");
+		}
+
+		function goList() {
+			location = "/board/list";
+		}
+
+		function removeComment(id) {
+			const isOk = confirm("댓글을 삭제하시겠습니까?");
+			if (isOk) {
+				location = `/board/comment/remove?id=${id}&boardId=[[${board.id}]]`;
+			}
+		}
+	</script>
+</html>

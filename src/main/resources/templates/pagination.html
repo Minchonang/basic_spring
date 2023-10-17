@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<title>pagination</title>
+	</head>
+	<body>
+		<th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+			<!-- <th:block th:if="${page} == ${pageNumber}">
+				<span>this val</span>
+			</th:block>
+			<th:block th:unless="${page} == ${pageNumber}">
+				<span>that val</span>
+			</th:block> -->
+			<span
+				th:if="${page} == ${pageNumber}"
+				th:text="${pageNumber}"
+				style="font-weight: bold"
+			></span>
+			<span th:unless="${page} == ${pageNumber}" th:text="${pageNumber}"></span>
+		</th:block>
+
+		<th:block th:each="pageNumber : ${#numbers.sequence(1, 10)}">
+			<a
+				th:href="@{/pagination(page=${pageNumber})}"
+				th:unless="${pageNumber == page} "
+				th:text="${pageNumber}"
+			></a>
+			<a th:if="${pageNumber == page} " th:text="${pageNumber}"> </a>
+		</th:block>
+	</body>
+</html>

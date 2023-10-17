@@ -1,0 +1,97 @@
+<head>
+	<style>
+		body {
+			margin: 30px auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		form {
+			margin: 30px 50px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		input {
+			margin: 5px 0;
+			padding: 5px 10px;
+			border-top: 0;
+			border-left: 0;
+			border-right: 0;
+			border-bottom: solid;
+			outline: none;
+			transition-duration: 0.2s;
+			width: 250px;
+			font-size: 1.3rem;
+		}
+
+		input:focus {
+			border-bottom: solid aquamarine;
+		}
+		input[type="number"]::-webkit-outer-spin-button,
+		input[type="number"]::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
+
+		button {
+			margin: 5px 0;
+			padding: 10px 62px;
+			background-color: aquamarine;
+			border: 0;
+			border-radius: 8px;
+			cursor: pointer;
+			transition-duration: 0.3s;
+			font-weight: bold;
+			width: 250px;
+			font-size: 1.1rem;
+		}
+		button:hover {
+			background-color: rgb(117, 238, 197);
+		}
+	</style>
+</head>
+<body>
+	<h1 onclick="window.location = '/signup'">회원가입</h1>
+	<form action="/auth/signup" method="post">
+		<input
+			type="text"
+			name="id"
+			placeholder="ID(숫자)"
+			onfocus="this.placeholder = ''"
+			onblur="this.placeholder= 'ID(숫자)'"
+		/>
+		<button type="button" onclick="getId()">중복검사</button>
+		<br />
+
+		<input
+			type="password"
+			name="pwd"
+			placeholder="비밀번호"
+			onfocus="this.placeholder = ''"
+			onblur="this.placeholder= '비밀번호'"
+		/>
+
+		<br />
+		<input
+			type="text"
+			name="name"
+			placeholder="이름"
+			onfocus="this.placeholder = ''"
+			onblur="this.placeholder='이름'"
+		/>
+
+		<button>가입하기</button>
+	</form>
+</body>
+
+<script>
+	async function getId() {
+		const id = document.querySelector("[name=id]").value;
+
+		const data = await fetch(`/auth/id-check?id=${id}`);
+		const res = await data.text();
+		console.log(res);
+	}
+</script>

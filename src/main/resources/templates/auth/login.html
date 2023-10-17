@@ -1,0 +1,11 @@
+<body>
+	<th:block th:unless="${session.user_id != null}">
+		<span>로그아웃 완료!</span>
+		<button onclick="window.location='/empList'">홈으로</button>
+	</th:block>
+
+	<th:block th:if="${session.user_id != null}">
+		<span>로그인 완료!</span>
+		<button onclick="window.location='/empList'">홈으로</button>
+	</th:block>
+</body>

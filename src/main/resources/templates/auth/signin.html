@@ -1,0 +1,123 @@
+<head>
+	<style>
+		body {
+			margin: 30px auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		form {
+			margin: 30px 50px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.head {
+			margin-top: 60px;
+			cursor: pointer;
+		}
+
+		input[type="number"]::-webkit-outer-spin-button,
+		input[type="number"]::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
+		input {
+			margin: 1px 0;
+			padding: 5px 10px;
+			border-top: 0;
+			border-left: 0;
+			border-right: 0;
+			border-bottom: lightgray solid 3px;
+			outline: none;
+			transition-duration: 0.3s;
+			width: 250px;
+			font-size: 1.3rem;
+		}
+
+		input:focus {
+			border-bottom: solid 3px rgb(114, 233, 193);
+		}
+
+		button {
+			margin: 5px 0;
+			padding: 10px 63px;
+			background-color: aquamarine;
+			border: 0;
+			border-radius: 8px;
+			cursor: pointer;
+			transition-duration: 0.3s;
+			color: rgb(74, 74, 74);
+			font-weight: bold;
+			width: 250px;
+			font-size: 1.1rem;
+		}
+		button:hover {
+			background-color: rgb(105, 214, 178);
+			color: white;
+		}
+
+		.intext {
+			color: lightgray;
+		}
+
+		.signupBtn {
+			cursor: pointer;
+			margin-bottom: 20px;
+		}
+		.signupBtn:hover {
+			text-decoration: underline;
+		}
+	</style>
+</head>
+<body>
+	<div class="head">
+		<h1 onclick="window.location='signin'">로그인</h1>
+	</div>
+	<form action="/auth/signin" method="post">
+		<input
+			type="number"
+			name="id"
+			placeholder="ID(숫자)"
+			onfocus="this.placeholder = ''"
+			onblur="this.placeholder= 'ID(숫자)'"
+		/>
+		<br />
+		<input
+			type="password"
+			name="pwd"
+			placeholder="패스워드"
+			onfocus="this.placeholder = ''"
+			onblur="this.placeholder= '패스워드'"
+		/>
+		<br />
+		<!-- <input
+			type="text"
+			name="name"
+			placeholder="이름"
+			onfocus="this.placeholder = ''"
+			onblur="this.placeholder='이름'"
+		/> -->
+		<br />
+		<button>로그인</button>
+	</form>
+	<a class="signupBtn" onclick="goSignup()">회원가입</a>
+
+	<!-- <div class="intext">
+		[로그인]
+		<br />
+		로그인 양식 보여주기
+		<br />
+		입력된 정보로 데이터 조회하기
+		<br />
+		/auth/signin으로 로그인 시도 후 로그인이 되었다면 auth/emp로 이동
+		<br />
+		실패했다면 auth/signin으로 이동
+	</div> -->
+</body>
+
+<script>
+	function goSignup() {
+		location = "/auth/signup";
+	}
+</script>

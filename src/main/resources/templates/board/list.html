@@ -1,0 +1,93 @@
+<html>
+	<title>게시물</title>
+	<head>
+		<style>
+			body {
+				margin: 50px 50px;
+			}
+			li {
+				list-style-type: none;
+			}
+			a {
+				text-decoration: none;
+				color: black;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+
+			.number {
+				color: gray;
+			}
+
+			.writer {
+				color: blue;
+				font-weight: bold;
+			}
+
+			button {
+				background-color: aquamarine;
+				border: none;
+				width: 150px;
+				height: 35px;
+				border-radius: 10px;
+				margin-left: 40px;
+				cursor: pointer;
+				transition-duration: 0.2s;
+				font-weight: bold;
+				font-size: 1.05rem;
+			}
+			button:hover {
+				background-color: rgb(105, 214, 178);
+				color: white;
+			}
+
+			.cmtCnt {
+				color: rgba(128, 128, 128, 0.675);
+			}
+
+			.signInBtn {
+				background-color: white;
+				border: 0;
+				font-weight: normal;
+			}
+			.signInBtn:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<hr />
+		<div>
+			<ul th:each="board:${boardList}">
+				<a th:href="@{/board/detail(id=${board.id})}">
+					<span class="number">[[${board.id}]]. |</span>
+					<span class="writer">[[${board.writer}]]</span>
+					<span> | [[${board.title }]]</span>
+				</a>
+				<span class="cmtCnt"
+					>&nbsp[ [[ ${#lists.size(board.comments)} ]] ]</span
+				>
+			</ul>
+			<hr />
+
+			<div>
+				<button onclick="upload()">글쓰기</button>
+			</div>
+
+			<th:block th:if="${session.name} == null">
+				<div>
+					<button onclick="goSignIn()" class="signInBtn">로그인</button>
+				</div>
+			</th:block>
+		</div>
+	</body>
+	<script>
+		function upload() {
+			location = "/board/write";
+		}
+		function goSignIn() {
+			location = "/auth/signin";
+		}
+	</script>
+</html>
